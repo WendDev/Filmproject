@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_folmpr/Theme/buttons.dart';
+import 'package:flutter_folmpr/Widgets/Mainscreen/_mainScreen.dart';
 
 class AuthWidget extends StatelessWidget {
   const AuthWidget({super.key});
@@ -32,7 +33,8 @@ class HeaederWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 20,
@@ -48,15 +50,20 @@ class HeaederWidget extends StatelessWidget {
             'In order to use editing and raiting capibilities to TMBd, as well as get personal recomendations you will need to login to your account.If you do not to have an account , rgitraning dor an account is free and simple.Click here to get started.',
             style: stoltext,
           ),
-          TextButton(onPressed: () {},style: Appbuttons.ResetButton, child: const Text('Register')),
+          TextButton(
+              onPressed: () {},
+              style: Appbuttons.ResetButton,
+              child: const Text('Register')),
           const SizedBox(
             height: 30,
           ),
-         
           Text(
               'If you signed up but didnt get your verfication email,click here to have it resent.',
               style: stoltext),
-              TextButton(onPressed: () {},style: Appbuttons.ResetButton, child: const Text('Verify email')),
+          TextButton(
+              onPressed: () {},
+              style: Appbuttons.ResetButton,
+              child: const Text('Verify email')),
         ],
       ),
     );
@@ -71,9 +78,24 @@ class _FormWidget extends StatefulWidget {
 }
 
 class __FormWidgetState extends State<_FormWidget> {
-   void ResetPassword(){
-      print('dd');
-   }
+  String? errorText = null;
+  final _loginTextController = TextEditingController();
+  final _passwordTextController = TextEditingController();
+
+  void _auth() {
+    String? login = _loginTextController.text;
+    String? password = _loginTextController.text;
+    setState(() {
+      if (login == 'admin' && password == 'admin') {
+        errorText = null;
+        final navigator = Navigator.of(context);
+        navigator.push(MaterialPageRoute<void>(builder: (context) => MainscreenWidget()));
+
+      } else {
+        errorText = 'Неверный логин или пароль';
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +105,7 @@ class __FormWidgetState extends State<_FormWidget> {
         isCollapsed: true);
 
     final text = const TextStyle(fontSize: 16, color: Color(0xFF212529));
-
+    final erorstyle = TextStyle(fontSize: 18, color: Colors.red);
     final text2 = const TextStyle(
       fontSize: 16,
       color: Colors.white,
@@ -92,11 +114,20 @@ class __FormWidgetState extends State<_FormWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (errorText != null)
+          Text(
+            errorText!,
+            style: erorstyle,
+          ),
+        const SizedBox(
+          height: 15,
+        ),
         Text('Username', style: text),
         const SizedBox(
           height: 5,
         ),
         TextField(
+          controller: _loginTextController,
           decoration: decorinp,
         ),
         const SizedBox(
@@ -107,6 +138,7 @@ class __FormWidgetState extends State<_FormWidget> {
           height: 5,
         ),
         TextField(
+          controller: _passwordTextController,
           decoration: decorinp,
           obscureText: true,
         ),
@@ -116,7 +148,7 @@ class __FormWidgetState extends State<_FormWidget> {
         Row(
           children: [
             TextButton(
-              onPressed: ResetPassword,
+              onPressed: _auth,
               style: Appbuttons.loginbutton,
               child: const Text('Login'),
             ),
