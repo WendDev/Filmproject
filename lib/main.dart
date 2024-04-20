@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_folmpr/Theme/app_Colors.dart';
 import 'package:flutter_folmpr/Widgets/Auth/auth_widget.dart';
+import 'package:flutter_folmpr/Widgets/Mainscreen/_mainScreen.dart';
 
 void main() {
-  runApp(Myapp());
+  runApp(const Myapp());
 }
 
 class Myapp extends StatelessWidget {
@@ -12,10 +15,19 @@ class Myapp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        appBarTheme:
-            const AppBarTheme(backgroundColor: Color.fromRGBO(19, 37, 65, 1)),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: AppColors.MainDarkBlue,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey,
+            
+            ),
+        appBarTheme: const AppBarTheme(backgroundColor: AppColors.MainDarkBlue,),
       ),
-      home: const AuthWidget(),
+      routes: {
+        '/Auth': (context) => const AuthWidget(),
+        '/Mainscreen': (context) => const MainscreenWidget(),
+      },
+      initialRoute: '/Auth',
     );
   }
 }

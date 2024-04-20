@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_folmpr/Theme/buttons.dart';
-import 'package:flutter_folmpr/Widgets/Mainscreen/_mainScreen.dart';
 
 class AuthWidget extends StatelessWidget {
   const AuthWidget({super.key});
@@ -79,8 +78,8 @@ class _FormWidget extends StatefulWidget {
 
 class __FormWidgetState extends State<_FormWidget> {
   String? errorText = null;
-  final _loginTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
+  final _loginTextController = TextEditingController(text: 'admin');
+  final _passwordTextController = TextEditingController(text: 'admin');
 
   void _auth() {
     String? login = _loginTextController.text;
@@ -88,12 +87,17 @@ class __FormWidgetState extends State<_FormWidget> {
     setState(() {
       if (login == 'admin' && password == 'admin') {
         errorText = null;
-        final navigator = Navigator.of(context);
-        navigator.push(MaterialPageRoute<void>(builder: (context) => MainscreenWidget()));
-
+        Navigator.of(context).pushReplacementNamed('/Mainscreen');
       } else {
         errorText = 'Неверный логин или пароль';
       }
+    });
+  }
+
+  void Reset() {
+    setState(() {
+      _loginTextController.text = '';
+      _passwordTextController.text = '';
     });
   }
 
@@ -156,7 +160,7 @@ class __FormWidgetState extends State<_FormWidget> {
               width: 15,
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: Reset,
                 style: Appbuttons.ResetButton,
                 child: const Text('Reset password'))
           ],
